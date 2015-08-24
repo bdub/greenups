@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+
+{% block page_title %}{{ object.name }}{% endblock page_title %}
+
+{% block content %}
+
+{% block main_image %}
+
+{% thumbnail object.image "2000x600" crop="center" as im %}
+    <img class="img-responsive" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+{% endthumbnail %}
+
+{% endblock main_image %}
+
+<h5>{{ object.start_time|date:"D d M Y" }}</h5>
+<h5>({{ object.start_time|time }} - {{ object.end_time|time }})</h5>
+
+<div class="event details">{{ object.details.rendered|safe }}</div>
+
+<h2>Speakers</h2>
+{% for speaker in object.speakers.all %}
+    <div class="speaker">
+        {% thumbnail speaker.image "300x300" crop="center" as im %}
+        <img class="img-responsive" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
+        <h3><a href="{{speaker.url}}" target="_blank">{{ speaker.name }}</a></h3>
+        <div class="speaker details">{{ speaker.about.rendered|safe }}</div>
+
+    </div>
+{% endfor %}
+</ul>
+
+{% endblock content %}
+

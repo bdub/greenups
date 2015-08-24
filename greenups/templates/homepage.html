@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 pull-right">
+        <h2 class="text-popout">Exchange creative juices, tall stories and radical strategies for how we can repair our broken world.</h2>
+    </div>
+
+    <div class="col-md-6">
+        <a class="anchor" id="about-greenups"></a>
+        <h1>{% block page_title %}About Greenups{% endblock page_title %}</h1>
+        <p>Greenups is a local Sydney-based not-for-profit community group.</p>
+        <p>We put on 'think and link' networking events to raise awareness and promote creative solutions to environmental and sustainability issues, attracting a mix of the professional, the passionate and the curious. </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <p>Each month we explore a topic of broad general interest through short talks, shared ideas and creative conversations.</p>
+        <p class="text-info" >At our next Event we're looking at "Plastic" as part of Plastic Free July.</p>
+    </div>
+    <div class="col-md-6">
+        <h3>How's it work</h3>
+        <p>The Greenups format is causal mingling/networking in a bar setting usually with a formal proceedings of a welcome and typically 3 lightning talks followed by a Q&amp;A with the audience. The talks are usually done in an hour, with the conversations continuing at the bar or over some food. It usually wraps up around 9 or 10.</p>
+        <p>Greenups talks are only 5 mins long, typically ( but it's amazing what you can say in 5 minutes if required!)</p>
+    </div>
+    <div class="col-md-6">
+        <h3>When's it on?</h3>
+        <p>Greenups is on the <span class="text-info">"First Tuesday of the Month"</span>, we try to keep that consistent so you can just put it in your calander and easily remember. with differnt themes venues nad locations it's nice to keep something consistent. Having said that we have sometimes moved the date in order to coincide with something, but that's definitly the exceptin.</p>
+        <p>Typically, Greenups starts at 6pm, with the talks at 7pm running for about an hour. after the talks most guests stick aroung for a chat and more drinks and food. It's all very casal.</p>
+    </div>
+</div>
+</div>
+
+<div class="newsletter-breakout" >
+    <div class="container">
+        <div class="row text-center">
+            <div class="center-block">
+                <h4>Sign up to stay up to date with Greenups</h4>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="exampleInputName2">Name</label>
+                        <input type="text" class="form-control" id="exampleInputName2" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail2">Email</label>
+                        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="name@example.com">
+                    </div>
+                    <button type="submit" class="btn btn-default">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+           <a class="anchor" id="next-event"></a>
+            <h1>What's on next</h1>
+            {% if coming_events|length >= 1 %}
+            {% with coming_events.0 as next %}
+            <div class="jumbotron event-jumbo" style="background-image: url({{ MEDIA_URL }}{{ next.image }});" >
+                <h2>{{ next.name }}</h2>
+                <h4>{{ next.start_time }}{# Tuesday July 7th (6-10pm) #}</h4>
+                <h5>{{ next.venue.name }}{#The Beauchamp Hotel#}</h5>
+                <h5><a href="{{ next.venue.map_url }}">{{ next.venue.address.short_string }}</a> {#<a href="https://maps.google.com.au/maps?q=The+Shelbourne+Hotel+200+Sussex+Street+Sydney">200 Sussex Street, Sydney</a>#}</h5>
+                {% if next.eventbrite %}
+                <p class="first"><a class="first" href="{{ next.eventbrite }}" target="_blank"><img src="https://www.eventbrite.com.au/custombutton?eid=16705896787" alt="Eventbrite - June Greenups - Ocean Health" /></a></p>
+                {% endif %}
+            </div>
+            <div class="event-details">
+                {{ next.details|safe }}
+            </div>
+            {% if next.speakers %}
+            <h4>Speakers</h4>
+            {% for speaker in next.speakers.all %}
+            <p class="p1"><strong>{{ speaker.name }} - </strong><i>{{ speaker.title }}</i> <a role="button" data-toggle="collapse" href="#speakerInfo00{{ forloop.counter }}" aria-expanded="false" aria-controls="speakerInfo001">more info <span class="glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></p>
+            <div id="speakerInfo00{{ forloop.counter }}" class="collapse">
+            {{ speaker.about }}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    {% endwith %}
+    {% else %}
+</div>
+</div>
+        <h2 class="bg-warning">There are no upcoming events scheduled. Please help schedule one!</h2>
+    {% endif %}
+    <div class="row">
+        {% if coming_events|length >= 2 %}
+        <div class="col-md-12">
+            <h1>Coming up</h1>
+        </div>
+        {% for event in coming_events %}
+        {% if forloop.first %}{% else %}
+        <div class="col-md-4">
+            <div class="jumbotron event-jumbo-secondary" style="background-image: url({{ MEDIA_URL }}{{ event.image }});" >
+                <h2>{{ event.start_time|date:"F" }}</h2>
+                <h2>{{ event.name }}</h2>
+                <h4>{{ event.start_time|date:"l N jS" }}</h4>
+                <h5>{{ event.venue }}</h5>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+       {% comment %}
+        <div class="col-md-4">
+            <div class="jumbotron event-jumbo-secondary" style="background-image: url({% static 'img/sardines-600x400.jpg' %});" >
+                <h2>September</h2>
+                <h2>Suggest a theme...</h2>
+                <h4>Tuesday June 2nd</h4>
+                <h5>Suggest a venue</h5>
+            </div></div>
+        <div class="col-md-4">
+            <div class="jumbotron event-jumbo-secondary" style="background-image: url({% static 'img/sardines-600x400.jpg' %});" >
+                <h2>April</h2>
+                <h2>Sustainable Seafood</h2>
+                <h4>Tuesday June 2nd</h4>
+                <h5>The Shelbourne Hotel</h5>
+            </div></div>
+        {% endcomment %}
+         {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Past Events</h1>
+        </div>
+        <div class="col-md-4">
+            <div class="jumbotron event-jumbo-secondary" style="background-image: url({% static 'img/tarkine.jpg' %});" >
+                <h2>June</h2>
+                <h2>The Magic of the Tarkine</h2>
+                <h4>Tuesday June 2nd</h4>
+                <h5>The Shelbourne Hotel</h5>
+            </div></div>
+        <div class="col-md-4">
+            <div class="jumbotron event-jumbo-secondary" style="background-image: url({% static 'img/sardines-600x400.jpg' %});" >
+                <h2>May</h2>
+                <h2>Sustainable Seafood</h2>
+                <h4>Tuesday June 2nd</h4>
+                <h5>The Shelbourne Hotel</h5>
+            </div></div>
+        <div class="col-md-4">
+            <div class="jumbotron event-jumbo-secondary" style="background-image: url({% static 'img/sardines-600x400.jpg' %});" >
+                <h2>April</h2>
+                <h2>Sustainable Seafood</h2>
+                <h4>Tuesday June 2nd</h4>
+                <h5>The Shelbourne Hotel</h5>
+            </div></div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Get Involved</h1>
+
+            <p>Greenups is run by a small group of passionate individuals who enjoy creating a forum for idea sharing, connecting, discovering and creating solutions to make our lives more sustainable. </p>
+
+            <p>The core team is always looking of help, big or small, there's plenty to, so if your keen to get involved please do get in touch - no experience required :)</p>
+
+            <h3>Suggest a Theme</h3>
+
+            <p>Do you have a great idea for a theme that you'd like to see Greenups focus on? Is it an area that you have some in-depth knowledge on, or just a topic that you're interested in and would like to know more about? We're open to anything broadly related to ecologically conscious living, if you've got an idea, give us a shout, the likely-hood is if you're interested in it, we'll be too.</p>
+
+            <h3>Suggest a Speaker</h3>
+
+            <p>Do you know someone amazing who really deserves to get their story out to the Greenups crowd, please let us know we're always looking out for speakers.</p>
+
+            <h3>Host an Event</h3>
+
+            <p>We love colaborating. Whether you're an individual or an orgainisation, if you'd like to work with Greenups to host an Event please get in touch.  </p>
+
+            <h3>Know a great Venue?</h3>
+
+            <p>Do you run a venue? Or perhaps you're a super "in the know" barfly up on all the great watering holes, either way if you know of somewhere that would be great to hold a GreenUps then please let us know. we love discovering and supporing independent venues that 'get sustaiability'.   </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Contact</h1>
+        </div>
+        <div class="col-md-6 pull-right">
+            Lorem ipsem dolor.Lorem ipsem dolor.Lorem ipsem dolor.Lorem ipsem dolor.    	Lorem ipsem dolor. Lorem ipsem dolor.Lorem ipsem dolor.Lorem ipsem dolor.Lorem ipsem dolor.Lorem ipsem dolor.Lorem ipsem dolor.      ...
+        </div>
+        <div class="col-md-6">
+
+            <form>
+
+                <div class="form-group">
+                    <label for="contactName">Name</label>
+                    <input type="password" class="form-control" id="contactName" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">Email</label>
+                    <input type="email" class="form-control" id="contactEmail" placeholder="Email">
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">I'm keen to get more involved
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">I'd like to suggest a Theme
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">I know an awesome Venue
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="contactSubjectl">Subject</label>
+                    <input type="email" class="form-control" id="contactSubject" placeholder="What's up?">
+                </div>
+
+                <div class="from-group">
+                    <label for="contactComment">Comment</label>
+                    <textarea id="contactComment" class="form-control" rows="5" type="textarea">Details...</textarea>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+{% for event in coming_events %}
+
+<p>{{ event.name }}</p>
+
+{% endfor %}
+
+{% endblock content %}
+
